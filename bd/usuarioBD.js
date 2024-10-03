@@ -66,7 +66,7 @@ async function borrarUsuario(id) {
     }
     return usuarioBorrado;
 }
-//borrarUsuario("DvnUP8zKXJKY1gwVDRgY");
+ borrarUsuario("DvnUP8zKXJKY1gwVDRgY");
 //mostrarUsuarios();
 
 //buscarPorId("100");
