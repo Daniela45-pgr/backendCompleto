@@ -1,6 +1,6 @@
 class Usuario{
   constructor(data){
-      this.id=data;
+      this.id=data.id;
       this.nombre=data.nombre;
       this.usuario=data.usuario;
       this.password=data.password;
@@ -92,12 +92,3 @@ class Usuario{
 
 module.exports=Usuario;
 
-/*data={
-  id:"fkjd",
-  nombre:"Miguel Hidalgo",
-  usuario:"hidalgo",
-  password:"abc"
-}
-
-const usuario1=new Usuario(data);
-console.log(usuario1);*/

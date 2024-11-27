@@ -1,4 +1,4 @@
-const { ventasBD } = require("./Conexion");
+const { ventasBD, productosBD, usuariosBD } = require("./Conexion");
 const Venta = require("../clases/Venta");
 
 async function nuevaVenta(data) {
@@ -19,9 +19,6 @@ async function nuevaVenta(data) {
     }
 }
 
-
-
-
 async function mostrarVentas() {
     try {
         const snapshot = await ventasBD.get();
@@ -36,19 +33,41 @@ async function mostrarVentas() {
 
 async function buscarVentaPorID(id) {
     try {
+        // Obtener la venta por ID
         const venta = await ventasBD.doc(id).get();
         if (!venta.exists) {
-            console.log("Venta no encontrada con ID:", id); // Mostrar mensaje si no se encuentra la venta
+            console.log("Venta no encontrada con ID:", id);
             return null;
         }
+
         const ventaData = { id: venta.id, ...venta.data() };
-        console.log("Venta encontrada:", ventaData); // Mostrar la venta encontrada en la terminal
+
+        // Obtener el nombre del usuario con el idUsuario
+        const usuario = await usuariosBD.doc(ventaData.idUsuario).get();
+        if (usuario.exists) {
+            ventaData.nombreUsuario = usuario.data().nombre; // Asegúrate de que en la base de datos de usuarios tienes el campo 'nombre'
+        } else {
+            console.log("Usuario no encontrado con ID:", ventaData.idUsuario);
+        }
+
+        // Obtener el nombre del producto con el idProducto
+        const producto = await productosBD.doc(ventaData.idProducto).get();
+        if (producto.exists) {
+            ventaData.nombreProducto = producto.data().nombre; // Asumiendo que tienes el campo 'nombre' para los productos
+        } else {
+            console.log("Producto no encontrado con ID:", ventaData.idProducto);
+        }
+
+        console.log("Venta encontrada:", ventaData);
         return ventaData;
     } catch (error) {
-        console.error("Error al buscar la venta por ID:", error.message); // Mostrar el error en la terminal
+        console.error("Error al buscar la venta por ID:", error.message);
         return null;
     }
 }
+
+
+
 
 async function cancelarVenta(id) {
     try {
